@@ -1,0 +1,11 @@
+.flex {
+    background-color: lightblue;
+    display: block;
+    padding-top: 8rem;
+    padding-left: 35%;
+    justify-content: center;
+}
+
+.quote-button {
+    background-color: aqua;
+}
