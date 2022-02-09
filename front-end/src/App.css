@@ -1,12 +1,17 @@
-* {
-    background-color: rgb(92, 139, 92);
+*{
+    /*background-color: rgb(179, 218, 179);*/
+    
 }
 
 .center {
     border-radius: 20px;
+   /* background-image: url('./img/background1.png');*/
     margin: auto;
     width: 50%;
-    background-color: lightblue;
+    /*background-color: lightblue;*/
     height: 100vh;
-    box-shadow: 1px 1px 8px;
+    border-radius: 60px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 14px 12px 10px rgb(134, 130, 132);
 }
+    
