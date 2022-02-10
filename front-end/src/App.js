@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import FuelQuoteHistory from "./pages/FuelQuoteHistory";
 import FuelQuotesHome from "./pages/FuelQuotesHome";
 import NavBar from "./components/Navigation/NavBar";
@@ -25,6 +26,9 @@ const App = () => {
           </Route>
           <Route path="/fuelquote/history">
             <FuelQuoteHistory />
+          </Route>
+          <Route path="/Register" exact>
+            <Register />
           </Route>
           <Redirect to="/home" />
         </Switch>

@@ -1,13 +1,11 @@
 import React from "react";
-import "./Login.css"
-import logo from '../img/group30_logo.png'
 
-const Login = (props) => {
+const Register = (props) => {
     return(
       <body>
           <div className="centerPosition">
               <h1>
-              <img src={logo} alt="logo" className='logoimg' />
+              Register
               </h1>
               <form method="post">
                   <div className="input_field">
@@ -18,13 +16,12 @@ const Login = (props) => {
                       <input type="password" placeholder="Password"
                       required></input>
                   </div>
-                  <input type="submit" value="login" className="loginButton"></input>
-                  <div className="Register">Not registered?  <a href="/Register">Create an account</a>
-                  </div>
+                  <input type="submit" value="Create Account" className="loginButton"></input>
+                  
               </form>
           </div>
       </body>
     );
   };
   
-  export default Login;
+  export default Register;
