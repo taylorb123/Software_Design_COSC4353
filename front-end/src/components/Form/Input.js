@@ -37,7 +37,7 @@ const Input = (props) => {
 
   useEffect(() => {
     if (id === "gallons") {
-        props.onInput("total", value, isValid)
+      props.onInput("total", value, isValid);
     }
     props.onInput(id, value, isValid);
     // eslint-disable-next-line react-hooks/exhaustive-deps

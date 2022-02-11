@@ -22,13 +22,13 @@ const App = () => {
           <Route path="/login" exact>
             <Login />
           </Route>
-          <Route path="/home">
+          <Route path="/home" exact>
             <FuelQuotesHome />
           </Route>
-          <Route path="/fuelquote/new">
+          <Route path="/fuelquote/new" exact>
             <NewFuelQuote />
           </Route>
-          <Route path="/fuelquote/history">
+          <Route path="/fuelquote/history" exact>
             <FuelQuoteHistory />
           </Route>
           <Route path="/Register" exact>
