@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import FuelQuoteHistory from "./pages/FuelQuoteHistory";
 import FuelQuotesHome from "./pages/FuelQuotesHome";
 import NavBar from "./components/Navigation/NavBar";
+import NewFuelQuote from "./components/Form/NewFuelQuote";
 
 const App = () => {
   return (
@@ -23,6 +24,9 @@ const App = () => {
           </Route>
           <Route path="/home">
             <FuelQuotesHome />
+          </Route>
+          <Route path="/fuelquote/new">
+            <NewFuelQuote />
           </Route>
           <Route path="/fuelquote/history">
             <FuelQuoteHistory />
