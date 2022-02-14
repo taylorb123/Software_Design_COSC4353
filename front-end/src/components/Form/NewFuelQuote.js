@@ -128,7 +128,7 @@ const NewFuelQuote = (props) => {
       />
       <Input
         id="total"
-        element="total"
+        element="input"
         type="number"
         label="Total Amount Due"
         validators={[]}
