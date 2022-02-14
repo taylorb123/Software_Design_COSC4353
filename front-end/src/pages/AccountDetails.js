@@ -61,6 +61,7 @@ const AccountDetails = (props) => {
 
   return (
     <form className="fuel-form" onSubmit={accountDetailsSubmitHandler}>
+      <h1 className="form-title">Account Information</h1>
       <Input
         id="full_name"
         element="input"
@@ -119,7 +120,7 @@ const AccountDetails = (props) => {
         errorText="Please enter a zipcode (between 5 and 9 numbers)"
         onInput={inputHandler}
       />
-  <button type="submit" disabled={!formState.isValid}>
+  <button className = "form-button" type="submit" disabled={!formState.isValid}>
       Update Account
     </button>
     </form>

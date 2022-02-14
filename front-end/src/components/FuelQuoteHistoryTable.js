@@ -51,7 +51,7 @@ const FuelQuoteHistory = (props) => {
 
   return (
     <div className="center">
-      <table {...getTableProps()}>
+      <table className="the-table"{...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -61,7 +61,7 @@ const FuelQuoteHistory = (props) => {
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()}>
+        <tbody className="table-body"{...getTableBodyProps()}>
           {
             // Loop over the table rows
             rows.map((row) => {

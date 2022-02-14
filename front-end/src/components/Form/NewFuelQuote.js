@@ -72,6 +72,7 @@ const NewFuelQuote = (props) => {
 
   return (
     <form className="fuel-form" onSubmit={fuelQuoteSubmitHandler}>
+      <h1 className="form-title">Fuel Quote Form</h1>
       <Input
         id="gallons"
         element="input"
@@ -136,7 +137,7 @@ const NewFuelQuote = (props) => {
         onInput={inputHandler}
         disabled={true}
       />
-      <button type="submit" disabled={!formState.isValid}>
+      <button className="form-button" type="submit" disabled={!formState.isValid}>
         Submit New Quote
       </button>
     </form>

@@ -4,7 +4,7 @@ import logo from "../img/group30_logo.png";
 
 const Login = (props) => {
   return (
-    <body>
+    <body className="loginBody">
       <div className="centerPosition">
         <h1>
           <img src={logo} alt="logo" className="logoimg" />

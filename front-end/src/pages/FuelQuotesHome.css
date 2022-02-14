@@ -6,7 +6,16 @@
     justify-content: center;
 }
 
-
+.center{
+    
+    margin: auto;
+    width: 70%;
+    height: 100vh;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 14px 12px 10px rgb(134, 130, 132);
+    
+}
 .quote-button {
     /*background-color: aqua;*/
 }

@@ -1,18 +1,7 @@
-*{
-    /* background-color: rgb(179, 218, 179); */
-    
+body{
+    background: linear-gradient(120deg, #3f85c7, #6dce95);
 }
 
 
-.center {
-    border-radius: 20px;
-   /* background-image: url('./img/background1.png');*/
-    margin: auto;
-    width: 70%;
-    /*background-color: lightblue;*/
-    height: 100vh;
-    border-radius: 30px;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 14px 12px 10px rgb(134, 130, 132);
-}
+
     
