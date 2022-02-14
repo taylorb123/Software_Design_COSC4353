@@ -3,14 +3,15 @@
     
 }
 
+
 .center {
     border-radius: 20px;
    /* background-image: url('./img/background1.png');*/
     margin: auto;
-    width: 50%;
+    width: 70%;
     /*background-color: lightblue;*/
     height: 100vh;
-    border-radius: 60px;
+    border-radius: 30px;
     background-color: rgb(255, 255, 255);
     box-shadow: 14px 12px 10px rgb(134, 130, 132);
 }

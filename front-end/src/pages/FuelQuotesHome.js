@@ -16,6 +16,11 @@ const FuelQuotesHome = (props) => {
           <button className="quote-button">Fuel Quote History </button>
         </Link>
       </div>
+      <div className="flex">
+      <Link to="/account">
+        <button className="quote-button">Account Management </button>
+      </Link>
+    </div>
     </div>
   );
 };

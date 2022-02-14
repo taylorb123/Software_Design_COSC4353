@@ -1,11 +1,28 @@
 .flex {
-    background-color: lightblue;
+    /*background-color: lightblue;*/
     display: block;
-    padding-top: 8rem;
-    padding-left: 35%;
+    padding-top: 12rem;
+    padding-left: 30%;
     justify-content: center;
 }
 
+
 .quote-button {
-    background-color: aqua;
+    /*background-color: aqua;*/
+}
+.quote-button{
+    
+    width: 60%;
+    height: 40px;
+    font-size: 18px;
+    color: white;
+    border-radius: 25px;
+    background-color: #0485fd;
+    cursor: pointer;
+}
+.quote-button:hover{
+    
+    border-color: #6dce95;
+    transition: .5s;
+    background-color: #6dce95;
 }

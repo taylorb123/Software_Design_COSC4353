@@ -119,9 +119,9 @@ const AccountDetails = (props) => {
         errorText="Please enter a zipcode (between 5 and 9 numbers)"
         onInput={inputHandler}
       />
-      <button type="submit" disabled={!formState.isValid}>
-        Update Account
-      </button>
+  <button type="submit" disabled={!formState.isValid}>
+      Update Account
+    </button>
     </form>
   );
 };
