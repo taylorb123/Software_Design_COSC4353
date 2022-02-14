@@ -12,6 +12,7 @@ import FuelQuoteHistory from "./pages/FuelQuoteHistory";
 import FuelQuotesHome from "./pages/FuelQuotesHome";
 import NavBar from "./components/Navigation/NavBar";
 import NewFuelQuote from "./components/Form/NewFuelQuote";
+import AccountDetails from "./pages/AccountDetails";
 
 const App = () => {
   return (
@@ -31,8 +32,11 @@ const App = () => {
           <Route path="/fuelquote/history" exact>
             <FuelQuoteHistory />
           </Route>
-          <Route path="/Register" exact>
+          <Route path="/register" exact>
             <Register />
+          </Route>
+          <Route path="/account" exact>
+            <AccountDetails />
           </Route>
           <Redirect to="/home" />
         </Switch>

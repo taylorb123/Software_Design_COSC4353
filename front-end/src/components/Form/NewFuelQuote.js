@@ -2,7 +2,7 @@ import React, { useCallback, useReducer } from "react";
 
 import Input from "./Input";
 import "./NewFuelQuote.css";
-import { VALIDATOR_MIN, VALIDATOR_REQUIRE } from "./validators";
+import { VALIDATOR_MIN, VALIDATOR_MINLENGTH } from "./validators";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -110,7 +110,7 @@ const NewFuelQuote = (props) => {
         type="date"
         defaultValue="mm/dd/yyyy"
         label="Delivery Date"
-        validators={[VALIDATOR_REQUIRE]}
+        validators={[VALIDATOR_MINLENGTH(1)]}
         errorText="Please enter a date"
         onInput={inputHandler}
       />
