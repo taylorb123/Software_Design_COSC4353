@@ -1,12 +1,33 @@
+
 table, td, th {
+    
     border-radius: 3px;
-    border: 1px solid green;
-    background-color: gainsboro;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border-collapse: collapse;
+    padding: 10px;
+    text-align: left;
+    
+}
+
+.the-table th {
+    padding: 12px 15px;
+    background-color: rgb(163, 163, 163);
+}
+
+.table-center{
+background-color: white;
+height: 100vh;
+width: max-content;
+margin: auto;
+
 }
 
 .the-table{
     text-align: center;
     margin: auto;
+    width: auto;
+    height: 250px;
 }
 
 .table-body{

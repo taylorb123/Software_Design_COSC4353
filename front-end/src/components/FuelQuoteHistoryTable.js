@@ -50,7 +50,7 @@ const FuelQuoteHistory = (props) => {
   }
 
   return (
-    <div className="center">
+    <div className="table-center">
       <table className="the-table"{...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
