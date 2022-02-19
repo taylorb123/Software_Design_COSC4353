@@ -3,26 +3,34 @@ import "./Login.css";
 import logo from "../img/group30_logo.png";
 
 const Login = (props) => {
-  return (
-    <body className="loginBody">
+
+  const authSubmitHandler = event => {
+    event.preventDefault();
+    console.log(document.getElementById("user-name").value);
+    console.log(document.getElementById("passw").value);
+  }
+
+  return (    
+    
+    <div className="loginBody">
       <div className="centerPosition">
         <h1>
           <img src={logo} alt="logo" className="logoimg" />
         </h1>
-        <form method="post">
+        <form method=/*"post"*/ "submit" onSubmit={authSubmitHandler}>
           <div className="input_field">
-            <input type="text" placeholder="Username" required></input>
+            <input type="text" placeholder="Username" required id="user-name"></input>
           </div>
           <div className="input_field">
-            <input type="password" placeholder="Password" required></input>
+            <input type="password" placeholder="Password" required id="passw"></input>
           </div>
-          <input type="submit" value="login" className="loginButton"></input>
-          <div className="Register">
+           <button type="submit" value="login" className="loginButton" id="loginButton">Login</button>
+           <div className="Register">
             Not registered? <a href="/Register">Create an account</a>
           </div>
         </form>
       </div>
-    </body>
+    </div>
   );
 };
 
