@@ -12,6 +12,32 @@ let DUMMY_QUOTE = [
     }
 ];
 
+let ACCOUNT_INFORMATION = [
+    {
+        full_name: 'taylor kyle',
+        address1: '123 changed st.',
+        address2: '456 moved dr.',
+        city: 'Houston',
+        state: 'TX',
+        zip: '77379',
+        username: 'taylor'
+    }
+];
+
+const getAccountByUsername = (req,res,next) => {
+    const accountInfo = req.params.username;
+    const acc = ACCOUNT_INFORMATION.filter(p => {
+        return p.username === accountInfo;
+    });
+
+    if(!acc){
+        return next(new HttpError('Could not find account information for given username', 404));
+    }
+
+    console.log('Get Request in fuelquotes');
+    res.json({acc});
+};
+
 const getQuotesByUsername = (req,res,next) => {        //return json formatted DUMMY_QUOTE by username
     const quoteByUser = req.params.username;
     const quotes = DUMMY_QUOTE.filter(p => {
@@ -40,6 +66,22 @@ const createQuote = (req,res,next) => {
     };
     DUMMY_QUOTE.push(createQuote);
     res.status(201).json({quote: createQuote});
+};
+
+const updateAccountInformation = (req,res,next) => {
+    const{full_name,address1,address2,city,state,zip} = req.body;
+    const userAccount = req.params.username;
+    const updateAccountInformation = { ...ACCOUNT_INFORMATION.find(p => p.username === userAccount) };
+    const formIndex = ACCOUNT_INFORMATION.findIndex(p => p.username === userAccount);
+    updateAccountInformation.full_name = full_name;
+    updateAccountInformation.address1 = address1;
+    updateAccountInformation.address2 = address2;
+    updateAccountInformation.city = city;
+    updateAccountInformation.state = state;
+    updateAccountInformation.zip = zip;
+
+    ACCOUNT_INFORMATION[formIndex] = updateAccountInformation;
+    res.status(200).json({updateAccountInformation});
 };
 
 const updateQuote = (req,res,next) => {
@@ -72,3 +114,5 @@ exports.getQuotesByUsername = getQuotesByUsername;
 exports.createQuote = createQuote;
 exports.updateQuote = updateQuote;
 exports.deleteQuote = deleteQuote;
+exports.updateAccountInformation = updateAccountInformation;
+exports.getAccountByUsername = getAccountByUsername;
