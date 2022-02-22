@@ -1,4 +1,5 @@
 const HttpError = require('../models/http-error');
+const { validationResult } = require('express-validator');
 
 let DUMMY_QUOTE = [
     {
@@ -69,6 +70,12 @@ const createQuote = (req,res,next) => {
 };
 
 const updateAccountInformation = (req,res,next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors);
+        throw new HttpError('Invalid input', 422);
+    }
+
     const{full_name,address1,address2,city,state,zip} = req.body;
     const userAccount = req.params.username;
     const updateAccountInformation = { ...ACCOUNT_INFORMATION.find(p => p.username === userAccount) };

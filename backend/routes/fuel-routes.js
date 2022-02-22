@@ -1,13 +1,17 @@
 const express           = require('express');
 const fuelControllers   = require('../controllers/fuel-controllers');
 const router            = express.Router();
+const { check }         = require('express-validator');
 
 
 
 router.get('/:username', fuelControllers.getQuotesByUsername);
-router.post('/', fuelControllers.createQuote);                      //create a new quote
-router.patch('/:username', fuelControllers.updateQuote);            //update an exsisting quote by username
-router.delete('/:username', fuelControllers.deleteQuote);
-router.get('/:username/account', fuelControllers.getAccountByUsername);
-router.patch('/:username/account', fuelControllers.updateAccountInformation);           //detele an exsisting quote by username
+router.post('/', check('username').not().isEmpty() , fuelControllers.createQuote);                                  //create a new quote
+router.patch('/:username', fuelControllers.updateQuote);                        //update an exsisting quote by username
+router.delete('/:username', fuelControllers.deleteQuote);                       //detele an exsisting quote by username
+router.get('/:username/account', fuelControllers.getAccountByUsername);         //retroeve account_information
+router.patch('/:username/account',
+[check('full_name').not().isEmpty(), 
+check('address1').not().isEmpty()] 
+,fuelControllers.updateAccountInformation);   //update account_information
 module.exports = router;
