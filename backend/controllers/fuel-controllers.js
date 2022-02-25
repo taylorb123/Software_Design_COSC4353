@@ -57,13 +57,13 @@ const createQuote = (req,res,next) => {
     const {gallons,address1,address2,date,ppg,total,username } = req.body;
 
     const createQuote = {
-        gallons,
-        address1,
-        address2,
-        date,
-        ppg,
-        total,
-        username
+        'gallons': gallons,
+        'address1': address1,
+        'address2': address2,
+        'date': date,
+        'ppg': ppg,
+        'total': total,
+        'username': username
     };
     DUMMY_QUOTE.push(createQuote);
     res.status(201).json({quote: createQuote});

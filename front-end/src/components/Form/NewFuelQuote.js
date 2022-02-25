@@ -65,9 +65,31 @@ const NewFuelQuote = (props) => {
     }
   }, []);
 
-  const fuelQuoteSubmitHandler = (event) => {
+  const fuelQuoteSubmitHandler = async event => {
     event.preventDefault();
-    console.log(formState.inputs);
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/fuelquote/', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          gallons: formState.inputs.gallons.value,
+          address1: formState.inputs.address1.value,
+          address2: formState.inputs.address2.value,
+          date: formState.inputs.date.value,
+          ppg: formState.inputs.ppg.value,
+          total: formState.inputs.total.value,
+          username: "taylor",
+        })
+      });
+
+      const data = await response.json();
+      console.log(data)
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   return (
@@ -78,7 +100,7 @@ const NewFuelQuote = (props) => {
         element="input"
         type="number"
         label="Gallons Requested"
-        defaultValue={0}
+        defaultValue={''}
         validators={[VALIDATOR_MIN(1)]}
         errorText="Please enter a valid number of at least 1"
         onInput={inputHandler}
