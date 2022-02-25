@@ -44,7 +44,6 @@ const getQuotesByUsername = (req,res,next) => {        //return json formatted D
     const quotes = DUMMY_QUOTE.filter(p => {
         return p.username === quoteByUser;
     });
-
     if(!quotes || quotes.length === 0){
         return next(new HttpError('Could not find quotes for given username', 404));
     }
@@ -65,6 +64,8 @@ const createQuote = (req,res,next) => {
         'total': total,
         'username': username
     };
+
+    console.log("POST Request for new quote")
     DUMMY_QUOTE.push(createQuote);
     res.status(201).json({quote: createQuote});
 };

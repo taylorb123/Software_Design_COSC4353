@@ -12,7 +12,7 @@ const FuelQuoteHistory = (props) => {
       },
       {
         Header: "Delivery Address",
-        accessor: "address",
+        accessor: "address1",
       },
       {
         Header: "Secondary Address",
