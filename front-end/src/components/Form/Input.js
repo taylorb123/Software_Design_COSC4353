@@ -20,17 +20,17 @@ const inputReducer = (state, action) => {
       return state;
   }
 };
-
 const Input = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: props.defaultValue || "",
+    value: props.defaultValue || props.value || "",
     isTouched: false,
     isValid:
-      false ||
-      props.id.substring(0, 7) === "address" ||
-      props.id === "ppg" ||
-      props.id === "total",
+    false ||
+    props.id.substring(0, 7) === "address" ||
+    props.id === "ppg" ||
+    props.id === "total",
   });
+  console.log(inputState)
 
   const { id, onInput } = props;
   const { value, isValid } = inputState;
@@ -135,7 +135,7 @@ const Input = (props) => {
         !inputState.isValid && inputState.isTouched && "form--invalid"
       }`}
     >
-      <label htmlFor={props.id}>{props.label}</label>
+      <label htmlFor={props.id}>{props.label}{props.validators.length > 0 && "*"}</label>
       {inputField}
       {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
     </div>

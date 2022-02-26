@@ -1,4 +1,11 @@
-import React, { useCallback, useReducer } from "react";
+import React, {
+  useCallback,
+  useReducer,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { AuthContext } from "../../utility/auth-context";
 
 import Input from "./Input";
 import "./NewFuelQuote.css";
@@ -30,6 +37,7 @@ const formReducer = (state, action) => {
 
 const NewFuelQuote = (props) => {
   const PPG = 4;
+  const auth = useContext(AuthContext);
 
   const [formState, dispatch] = useReducer(formReducer, {
     inputs: {
@@ -65,14 +73,38 @@ const NewFuelQuote = (props) => {
     }
   }, []);
 
-  const fuelQuoteSubmitHandler = async event => {
+  const [address1, setAddress1] = useState();
+  const [address2, setAddress2] = useState();
+  useEffect(() => {
+    const sendRequest = async () => {
+      try {
+        const fetchURL = `http://localhost:5000/api/fuelquote/${auth.userName}/account`;
+        const response = await fetch(fetchURL);
+
+        let responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        setAddress1(responseData.acc[0].address1);
+        setAddress2(responseData.acc[0].address2);
+      } catch (err) {
+        alert(err);
+      }
+    };
+    sendRequest();
+  }, [inputHandler, auth.userName]);
+  if (!address1) return false;
+  if (!address2) return false;
+
+  const fuelQuoteSubmitHandler = async (event) => {
     event.preventDefault();
-    
+    console.log(formState);
+
     try {
-      const response = await fetch('http://localhost:5000/api/fuelquote/', {
+      const response = await fetch("http://localhost:5000/api/fuelquote/", {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           gallons: formState.inputs.gallons.value,
@@ -81,14 +113,17 @@ const NewFuelQuote = (props) => {
           date: formState.inputs.date.value,
           ppg: formState.inputs.ppg.value,
           total: formState.inputs.total.value,
-          username: "taylor",
-        })
+          username: auth.userName,
+        }),
       });
 
       const data = await response.json();
-      console.log(data)
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      alert("Quote Created Successfully");
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -100,7 +135,7 @@ const NewFuelQuote = (props) => {
         element="input"
         type="number"
         label="Gallons Requested"
-        defaultValue={''}
+        defaultValue={""}
         validators={[VALIDATOR_MIN(1)]}
         errorText="Please enter a valid number of at least 1"
         onInput={inputHandler}
@@ -111,7 +146,8 @@ const NewFuelQuote = (props) => {
         type="text"
         label="Address1"
         validators={[]}
-        defaultValue="Address1"
+        defaultValue={address1}
+        value={address1}
         errorText="Please enter a valid address (at least 10 characters)"
         onInput={inputHandler}
         disabled={true}
@@ -122,7 +158,8 @@ const NewFuelQuote = (props) => {
         type="text"
         label="Address2"
         validators={[]}
-        defaultValue="Address2"
+        defaultValue={address2}
+        value={address2}
         errorText="Please enter a valid address (at least 10 characters)"
         onInput={inputHandler}
         disabled={true}
@@ -159,7 +196,12 @@ const NewFuelQuote = (props) => {
         onInput={inputHandler}
         disabled={true}
       />
-      <button className="form-button" type="submit" disabled={!formState.isValid}>
+      <p>* indicates a required field</p>
+      <button
+        className="form-button"
+        type="submit"
+        disabled={!formState.isValid}
+      >
         Submit New Quote
       </button>
     </form>

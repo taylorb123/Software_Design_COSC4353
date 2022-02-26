@@ -17,10 +17,10 @@ const FuelQuotesHome = (props) => {
         </Link>
       </div>
       <div className="flex">
-      <Link to="/account">
-        <button className="quote-button">Account Management </button>
-      </Link>
-    </div>
+        <Link to="/account">
+          <button className="quote-button">Account Management </button>
+        </Link>
+      </div>
     </div>
   );
 };

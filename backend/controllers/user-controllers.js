@@ -1,5 +1,6 @@
 const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
+const ACCOUNT_INFORMATION = require('./fuel-controllers').ACCOUNT_INFORMATION
 
 const DUMMY_USERS = [
     {
@@ -46,7 +47,18 @@ const register = (req,res,next) => {
         password
     };
 
+    const createdAccount = {
+        full_name: "",
+        address1: "N/A",
+        address2: "N/A",
+        city: "",
+        state: "",
+        zip: "",
+        username: username,
+    }
+
     DUMMY_USERS.push(createdUser);
+    ACCOUNT_INFORMATION.push(createdAccount)
 
     res.status(201).json({user: createdUser});
 };

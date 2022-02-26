@@ -1,3 +1,6 @@
 .form--invalid {
     color: red;
 }
+p {
+    color: red;
+}

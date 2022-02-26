@@ -1,11 +1,12 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useReducer, useCallback, useContext } from "react";
 
 import Input from "../components/Form/Input";
 import {
   VALIDATOR_MAXLENGTH,
   VALIDATOR_MINLENGTH,
+  VALIDATOR_REQUIRE,
 } from "../components/Form/validators";
-import "./AccountDetails.css";
+import { AuthContext } from "../utility/auth-context";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -32,6 +33,8 @@ const formReducer = (state, action) => {
 };
 
 const AccountDetails = (props) => {
+  const auth = useContext(AuthContext);
+
   const [formState, dispatch] = useReducer(formReducer, {
     inputs: {
       state: {
@@ -54,9 +57,34 @@ const AccountDetails = (props) => {
     );
   }, []);
 
-  const accountDetailsSubmitHandler = (event) => {
+  const accountDetailsSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      const fetchURL = `http://localhost:5000/api/fuelquote/${auth.userName}/accounts`;
+      const response = await fetch(fetchURL, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          full_name: formState.inputs.full_name.value,
+          address1: formState.inputs.address1.value,
+          address2: formState.inputs.address2.value,
+          city: formState.inputs.city.value,
+          state: formState.inputs.state.value,
+          zip: formState.inputs.zip.value,
+          username: auth.userName,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      alert("Account updated successfully!");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -87,7 +115,7 @@ const AccountDetails = (props) => {
         element="input"
         type="text"
         label="Address2"
-        validators={[VALIDATOR_MINLENGTH(1), VALIDATOR_MAXLENGTH(100)]}
+        validators={[]}
         defaultValue=""
         errorText="Please enter a valid address (100 characters max)"
         onInput={inputHandler}
@@ -106,7 +134,7 @@ const AccountDetails = (props) => {
         id="state"
         element="dropdown"
         label="State"
-        validators={[]}
+        validators={[VALIDATOR_REQUIRE]}
         errorText="Please select a state"
         onInput={inputHandler}
       />
@@ -120,9 +148,14 @@ const AccountDetails = (props) => {
         errorText="Please enter a zipcode (between 5 and 9 numbers)"
         onInput={inputHandler}
       />
-  <button className = "form-button" type="submit" disabled={!formState.isValid}>
-      Update Account
-    </button>
+      <p>* indicates a required field</p>
+      <button
+        className="form-button"
+        type="submit"
+        disabled={!formState.isValid}
+      >
+        Update Account
+      </button>
     </form>
   );
 };
