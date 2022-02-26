@@ -134,7 +134,7 @@ const Login = (props) => {
         <Input
           id="password"
           element="input"
-          type="text"
+          type="password"
           label="password"
           validators={[VALIDATOR_MINLENGTH(8)]}
           defaultValue=""
