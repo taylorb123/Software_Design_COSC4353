@@ -4,7 +4,7 @@ const ACCOUNT_INFORMATION = require('./fuel-controllers').ACCOUNT_INFORMATION
 
 const DUMMY_USERS = [
     {
-        username: 'Taylor',
+        username: 'Taylor123',
         password: 'password'
     }
 ];

@@ -34,4 +34,6 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred!" });
 });
 
-app.listen(5000);
+let server = app.listen(5000);
+
+module.exports = server;
