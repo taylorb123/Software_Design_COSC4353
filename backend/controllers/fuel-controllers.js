@@ -1,6 +1,5 @@
 const HttpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
-
 let DUMMY_QUOTE = [
   {
     gallons: "2",

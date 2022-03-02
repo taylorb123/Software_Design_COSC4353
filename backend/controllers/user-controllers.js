@@ -1,7 +1,6 @@
 const HttpError = require('../models/http-error');
 const { validationResult } = require('express-validator');
 const ACCOUNT_INFORMATION = require('./fuel-controllers').ACCOUNT_INFORMATION
-
 const DUMMY_USERS = [
     {
         username: 'Taylor123',
