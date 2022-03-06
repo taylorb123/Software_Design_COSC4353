@@ -23,6 +23,10 @@ const login = (req,res,next) => {
 
     const { username, password } = req.body;
 
+    if (username.length < 8) {
+        throw new HttpError("Username must be at least 8 characters.", 400)
+      }
+
     const registeredUser = DUMMY_USERS.find( u => u.username === username);
     if(!registeredUser || registeredUser.password !== password){
         //return next(new HttpError('Could not find given user', 401));
@@ -40,6 +44,10 @@ const register = (req,res,next) => {
     }
 
     const { username, password } = req.body;
+
+    if (username.length < 8) {
+        throw new HttpError('Username must be at least 8 characters', 400)
+    }
 
     const createdUser = {
         username,

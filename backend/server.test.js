@@ -9,7 +9,7 @@ describe("POST /register", () =>{
     describe("Register a username and password", () =>{
         test("should respond with a 201 status cade", async () =>{
             const response = await request(server).post("/api/users/register").send({
-                "username": "taylor",
+                "username": "taylor456",
                 "password": "password"
             })
             expect (response.statusCode).toBe(201)

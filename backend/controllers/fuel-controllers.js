@@ -24,10 +24,11 @@ let ACCOUNT_INFORMATION = [
   },
 ];
 
-exports.ACCOUNT_INFORMATION = ACCOUNT_INFORMATION
+exports.ACCOUNT_INFORMATION = ACCOUNT_INFORMATION;
 
 const getAccountByUsername = (req, res, next) => {
   const accountInfo = req.params.username;
+
   const acc = ACCOUNT_INFORMATION.filter((p) => {
     return p.username === accountInfo;
   });
@@ -72,6 +73,10 @@ const createQuote = (req, res, next) => {
     username: username,
   };
 
+  if (isNaN(gallons) || gallons <= 0) {
+    throw new HttpError("Gallons must be a positive integer", 400);
+  }
+
   console.log("POST Request for new quote");
   DUMMY_QUOTE.push(createQuote);
   res.status(201).json({ quote: createQuote });
@@ -86,6 +91,27 @@ const updateAccountInformation = (req, res, next) => {
 
   const { full_name, address1, address2, city, state, zip, username } =
     req.body;
+
+  if (full_name.length > 50) {
+    throw new HttpError("Full name must be 50 characters or less", 400);
+  }
+
+  if (address1.length > 100) {
+    throw new HttpError("Address must be 100 characters or less", 400);
+  }
+
+  if (address2.length > 100) {
+    throw new HttpError("Address must be 100 characters or less", 400);
+  }
+
+  if (city.length > 100) {
+    throw new HttpError("City must be 100 characters or less", 400);
+  }
+
+  if (zip < 10000 || zip > 999999999) {
+    throw new HttpError("Zip must be a number with 5-9 digits", 400);
+  }
+
   const updateAccountInformation = {
     ...ACCOUNT_INFORMATION.find((p) => p.username === username),
   };
