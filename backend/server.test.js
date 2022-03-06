@@ -88,6 +88,51 @@ describe("PATCH /fuelquote", () => {
             expect(response.statusCode).toBe(200)
         })
     })
+
+    describe("Update account information given a username, with full name > 50", () => {
+        test("400 status code, account information failed (full name too long)", async () => {
+            const response = await request(server).patch("/api/fuelquote/taylor/accounts").send({
+                "full_name": "01234567890012345678900123456789001234567890012345678901",
+                "address1": "123 changed st.",
+                "address2": "456 moved dr.",
+                "city": "Houston",
+                "state": "TX",
+                "zip": "77379",
+                "username": "taylor"
+            })
+            expect(response.statusCode).toBe(400)
+        })
+    })
+
+    describe("Update account information given a username, with address1 > 100", () => {
+        test("400 status code, account information failed (address1 too long)", async () => {
+            const response = await request(server).patch("/api/fuelquote/taylor/accounts").send({
+                "full_name": "taylor123",
+                "address1": "0123456789001234567890012345678900123456789001234567890101234567890012345678900123456789001234567890012345678901",
+                "address2": "456 moved dr.",
+                "city": "Houston",
+                "state": "TX",
+                "zip": "77379",
+                "username": "taylor"
+            })
+            expect(response.statusCode).toBe(400)
+        })
+    })
+
+    describe("Update account information given a username, with address2 > 100", () => {
+        test("400 status code, account information failed (address2 too long)", async () => {
+            const response = await request(server).patch("/api/fuelquote/taylor/accounts").send({
+                "full_name": "taylor123",
+                "address1": "123 changed st.",
+                "address2": "0123456789001234567890012345678900123456789001234567890101234567890012345678900123456789001234567890012345678901",
+                "city": "Houston",
+                "state": "TX",
+                "zip": "77379",
+                "username": "taylor"
+            })
+            expect(response.statusCode).toBe(400)
+        })
+    })
 })
 
 describe("GET /", () =>{
