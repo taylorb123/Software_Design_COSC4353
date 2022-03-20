@@ -123,7 +123,7 @@ const NewFuelQuote = (props) => {
       }
       alert("Quote Created Successfully");
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 

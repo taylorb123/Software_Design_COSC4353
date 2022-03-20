@@ -1,5 +1,8 @@
 const HttpError = require("../models/http-error");
+const Quote = require("../models/quote")
 const { validationResult } = require("express-validator");
+
+
 let DUMMY_QUOTE = [
   {
     gallons: "2",
@@ -63,22 +66,30 @@ const getQuotesByUsername = (req, res, next) => {
 const createQuote = (req, res, next) => {
   const { gallons, address1, address2, date, ppg, total, username } = req.body;
 
-  const createQuote = {
-    gallons: gallons,
-    address1: address1,
-    address2: address2,
-    date: date,
-    ppg: ppg,
-    total: total,
-    username: username,
-  };
+  const createQuote = new Quote({
+    gallons,
+    address1,
+    address2,
+    date,
+    ppg,
+    total,
+    username
+  })
+
 
   if (isNaN(gallons) || gallons <= 0) {
     throw new HttpError("Gallons must be a positive integer", 400);
   }
 
-  console.log("POST Request for new quote");
-  DUMMY_QUOTE.push(createQuote);
+  if (address1 === "N/A") {
+    throw new HttpError("Please enter an address in account management", 400)
+  }
+  try {
+    createQuote.save()
+  } catch (err) {
+    throw new HttpError("Create failed, try again", 500)
+  }
+
   res.status(201).json({ quote: createQuote });
 };
 
