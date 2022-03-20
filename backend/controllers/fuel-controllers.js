@@ -45,21 +45,23 @@ const getAccountByUsername = (req, res, next) => {
     );
   }
 
-  console.log("Get Request in fuelquotes");
   res.json({ acc });
 };
 
-const getQuotesByUsername = (req, res, next) => {
+const getQuotesByUsername = async (req, res, next) => {
   //return json formatted DUMMY_QUOTE by username
   const quoteByUser = req.params.username;
-  const quotes = DUMMY_QUOTE.filter((p) => {
-    return p.username === quoteByUser;
-  });
+  let quotes
+  try {
+    quotes = await Quote.find( {username: quoteByUser} )
+  } catch (err) {
+    throw new HttpError("Failed to retrieve quotes", 500)
+  }
+
   if (!quotes || quotes.length === 0) {
     return next(new HttpError("Could not find quotes for given username", 404));
   }
 
-  console.log("GET Request in fuelquotes");
   res.json({ quotes });
 };
 
