@@ -166,5 +166,15 @@ describe("GET /", () =>{
 
 })
 
+describe("DELETE /api/fuelquote", () =>{
+    describe("Delete a quote by username", () =>{
+        test("should respond with a 200 status code", async () =>{
+            const response = await request(server).delete("/api/fuelquote/taylormonday11").send({
+                "username": "taylormonday123"
+            })
+            expect (response.statusCode).toBe(200)
+        })
+    })
+})
 
 
