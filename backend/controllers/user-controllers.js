@@ -58,7 +58,7 @@ const login = async (req, res, next) => {
 const register = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
+    //console.log(errors);
     return next(new HttpError("Invalid input", 422));
   }
 
@@ -118,7 +118,7 @@ const register = async (req, res, next) => {
     await createdAccount.save();
   } catch (err) {
     const error = new HttpError("Creating a user failed", 500);
-    console.log(err);
+    //console.log(err);
     return next(error);
   }
   res.status(201).json({ user: createdAccount.toObject({ getters: true }) });

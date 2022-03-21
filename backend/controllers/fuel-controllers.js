@@ -102,7 +102,7 @@ const createQuote = (req, res, next) => {
 const updateAccountInformation = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
+    //console.log(errors);
     return next(new HttpError("Invalid input", 422));
   }
 

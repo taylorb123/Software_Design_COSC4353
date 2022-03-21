@@ -24,8 +24,8 @@ describe("POST /login", () =>{
         //should respond with json object containing the username and password
         test("should respond with a 200 status cade", async () =>{
             const response = await request(server).post("/api/users/login").send({
-                "username": "taylormonday123",
-                "password": "Gibson123!"
+                "username": "taylor45678",
+                "password": "password"
             })
             expect (response.statusCode).toBe(200)
         })
@@ -33,8 +33,8 @@ describe("POST /login", () =>{
     describe("Given a username and password is incorrect", () =>{
         test("should respond with a 401 status cade", async () =>{
             const response = await request(server).post("/api/users/login").send({
-                "username": "taylor123",
-                "password": "password"
+                "username": "taylor45678",
+                "password": "wrongpass"
             })
             expect (response.statusCode).toBe(401)
         })
@@ -42,7 +42,7 @@ describe("POST /login", () =>{
     describe("Given a username and password has invalid input", () =>{
         test("should respond with a 422 status cade", async () =>{
             const response = await request(server).post("/api/users/login").send({
-                //"username": "jestTest",
+                "username": "",
                 "password": "password"
             })
             expect (response.statusCode).toBe(422)
@@ -60,7 +60,7 @@ describe("POST /fuelquote", () => {
                 "date": "03/02/2022",
                 "ppg": "2.00",
                 "total": "20",
-                "username": "taylormonday123"
+                "username": "taylor45678"
             })
             expect (response.statusCode).toBe(201)
         })
@@ -77,7 +77,7 @@ describe("PATCH /fuelquote", () => {
                 "date": "03/02/2022",
                 "ppg": "2.00",
                 "total": "20",
-                "username": "taylormonday123"
+                "username": "taylor45678"
             })
             expect (response.statusCode).toBe(200)
         })
@@ -92,7 +92,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylormonday123"
+                "username": "taylor45678"
             })
             expect(response.statusCode).toBe(200)
         })
@@ -107,7 +107,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylormonday123"
+                "username": "taylor45678"
             })
             expect(response.statusCode).toBe(400)
         })
@@ -122,7 +122,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylormonday123"
+                "username": "taylor45678"
             })
             expect(response.statusCode).toBe(400)
         })
@@ -137,7 +137,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylormonday123"
+                "username": "taylor45678"
             })
             expect(response.statusCode).toBe(400)
         })
@@ -152,7 +152,7 @@ describe("GET /", () =>{
         }),
     describe("Retrieve a users account information by username", () =>{
         test("status code response 200", async () =>{
-              const response = await request(server).get("/api/fuelquote/taylormonday123")
+              const response = await request(server).get("/api/fuelquote/taylor45678")
               expect(response.statusCode).toBe(200)
         })
     }),
@@ -170,7 +170,7 @@ describe("DELETE /api/fuelquote", () =>{
     describe("Delete a quote by username", () =>{
         test("should respond with a 200 status code", async () =>{
             const response = await request(server).delete("/api/fuelquote/taylormonday11").send({
-                "username": "taylormonday123"
+                "username": "taylor45678"
             })
             expect (response.statusCode).toBe(200)
         })
