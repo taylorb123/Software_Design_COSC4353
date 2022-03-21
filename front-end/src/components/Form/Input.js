@@ -25,10 +25,11 @@ const Input = (props) => {
     value: props.defaultValue || props.value || "",
     isTouched: false,
     isValid:
-    false ||
-    props.id.substring(0, 7) === "address" ||
-    props.id === "ppg" ||
-    props.id === "total",
+      false ||
+      props.id.substring(0, 7) === "address" ||
+      props.id === "ppg" ||
+      props.id === "total" ||
+      props.defaultValue,
   });
 
   const { id, onInput } = props;
@@ -134,7 +135,10 @@ const Input = (props) => {
         !inputState.isValid && inputState.isTouched && "form--invalid"
       }`}
     >
-      <label htmlFor={props.id}>{props.label}{props.validators.length > 0 && "*"}</label>
+      <label htmlFor={props.id}>
+        {props.label}
+        {props.validators.length > 0 && "*"}
+      </label>
       {inputField}
       {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
     </div>

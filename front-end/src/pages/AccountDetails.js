@@ -1,4 +1,10 @@
-import React, { useReducer, useCallback, useContext, useState, useEffect } from "react";
+import React, {
+  useReducer,
+  useCallback,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 
 import Input from "../components/Form/Input";
 import {
@@ -57,7 +63,7 @@ const AccountDetails = (props) => {
     );
   }, []);
 
-  const [fullName, setFullName] = useState()
+  const [fullName, setFullName] = useState();
   const [address1, setAddress1] = useState();
   const [address2, setAddress2] = useState();
   const [city, setCity] = useState();
@@ -73,7 +79,6 @@ const AccountDetails = (props) => {
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-        console.log(responseData)
         setFullName(responseData.existingUser.full_name);
         setAddress1(responseData.existingUser.address1);
         setAddress2(responseData.existingUser.address2);
@@ -92,7 +97,6 @@ const AccountDetails = (props) => {
   if (!city) return false;
   if (!state) return false;
   if (!zip) return false;
-
 
   const accountDetailsSubmitHandler = async (event) => {
     event.preventDefault();
