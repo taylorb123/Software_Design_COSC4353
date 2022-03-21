@@ -9,7 +9,7 @@ describe("POST /register", () =>{
     describe("Register a username and password", () =>{
         test("should respond with a 201 status cade", async () =>{
             const response = await request(server).post("/api/users/register").send({
-                "username": "taylor456",
+                "username": "taylor45678",
                 "password": "password"
             })
             expect (response.statusCode).toBe(201)
@@ -24,7 +24,7 @@ describe("POST /login", () =>{
         //should respond with json object containing the username and password
         test("should respond with a 200 status cade", async () =>{
             const response = await request(server).post("/api/users/login").send({
-                "username": "Taylor123",
+                "username": "Taylor45678",
                 "password": "password"
             })
             expect (response.statusCode).toBe(200)
@@ -37,6 +37,15 @@ describe("POST /login", () =>{
                 "password": "password"
             })
             expect (response.statusCode).toBe(401)
+        })
+    }),
+    describe("Given a username and password has invalid input", () =>{
+        test("should respond with a 422 status cade", async () =>{
+            const response = await request(server).post("/api/users/login").send({
+                "username": "jestTest",
+                "password": "password"
+            })
+            expect (response.statusCode).toBe(422)
         })
     })
 })
@@ -137,13 +146,13 @@ describe("PATCH /fuelquote", () => {
 
 describe("GET /", () =>{
     describe("Retrieve a list of stored users", () =>{
-        test("should respond with a 401 status cade", async () =>{
+        test("should respond with a 401 status code", async () =>{
             const response = await request(server).get("/api/users")
             expect (response.statusCode).toBe(200)
         }),
     describe("Retrieve a users account information by username", () =>{
         test("status code response 200", async () =>{
-              const response = await request(server).get("/api/fuelquote/taylor")
+              const response = await request(server).get("/api/fuelquote/taylormonday123")
               expect(response.statusCode).toBe(200)
         })
     }),
