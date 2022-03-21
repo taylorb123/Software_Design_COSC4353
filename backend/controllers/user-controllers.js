@@ -1,5 +1,6 @@
 const HttpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
 const ACCOUNT_INFORMATION = require("./fuel-controllers").ACCOUNT_INFORMATION;
 const User = require("../models/user");
 const clientInformation = require("../models/clientInformation");
@@ -35,11 +36,22 @@ const login = async (req, res, next) => {
     const error = new HttpError("Login failed", 500);
     return next(error);
   }
-  if (!existingUser || existingUser.password !== password) {
+
+  if (!existingUser) {
     const error = new HttpError("Invalid credentials", 401);
     return next(error);
   }
 
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+  } catch (err) {
+    return next(new HttpError("Could not log you in, please check credentials", 500));
+  }
+
+  if (!isValidPassword) {
+    return next(new HttpError("Invalid Credentials", 401))
+  } 
   res.json({ message: "Logged in!" });
 };
 
@@ -72,10 +84,16 @@ const register = async (req, res, next) => {
 
     return next(error);
   }
+  let hashedPassword
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch (err) {
+    return next("Could not create user (password)", 500);
+  }
 
   const createdUser = new User({
     username,
-    password,
+    password: hashedPassword,
   });
 
   const full_name = "N/A";
