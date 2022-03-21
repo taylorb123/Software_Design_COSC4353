@@ -24,8 +24,8 @@ describe("POST /login", () =>{
         //should respond with json object containing the username and password
         test("should respond with a 200 status cade", async () =>{
             const response = await request(server).post("/api/users/login").send({
-                "username": "Taylor45678",
-                "password": "password"
+                "username": "taylormonday123",
+                "password": "Gibson123!"
             })
             expect (response.statusCode).toBe(200)
         })
@@ -42,7 +42,7 @@ describe("POST /login", () =>{
     describe("Given a username and password has invalid input", () =>{
         test("should respond with a 422 status cade", async () =>{
             const response = await request(server).post("/api/users/login").send({
-                "username": "jestTest",
+                //"username": "jestTest",
                 "password": "password"
             })
             expect (response.statusCode).toBe(422)
@@ -60,7 +60,7 @@ describe("POST /fuelquote", () => {
                 "date": "03/02/2022",
                 "ppg": "2.00",
                 "total": "20",
-                "username": "testusername"
+                "username": "taylormonday123"
             })
             expect (response.statusCode).toBe(201)
         })
@@ -77,7 +77,7 @@ describe("PATCH /fuelquote", () => {
                 "date": "03/02/2022",
                 "ppg": "2.00",
                 "total": "20",
-                "username": "Taylor123"
+                "username": "taylormonday123"
             })
             expect (response.statusCode).toBe(200)
         })
@@ -92,7 +92,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylor"
+                "username": "taylormonday123"
             })
             expect(response.statusCode).toBe(200)
         })
@@ -107,7 +107,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylor"
+                "username": "taylormonday123"
             })
             expect(response.statusCode).toBe(400)
         })
@@ -122,7 +122,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylor"
+                "username": "taylormonday123"
             })
             expect(response.statusCode).toBe(400)
         })
@@ -137,7 +137,7 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
-                "username": "taylor"
+                "username": "taylormonday123"
             })
             expect(response.statusCode).toBe(400)
         })
