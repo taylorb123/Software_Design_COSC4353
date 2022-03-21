@@ -1,7 +1,7 @@
 const HttpError = require("../models/http-error");
-const Quote = require("../models/quote")
+const Quote = require("../models/quote");
 const { validationResult } = require("express-validator");
-
+const clientInformation = require("../models/clientInformation");
 
 let DUMMY_QUOTE = [
   {
@@ -29,14 +29,18 @@ let ACCOUNT_INFORMATION = [
 
 exports.ACCOUNT_INFORMATION = ACCOUNT_INFORMATION;
 
-const getAccountByUsername = (req, res, next) => {
+const getAccountByUsername = async (req, res, next) => {
   const accountInfo = req.params.username;
 
-  const acc = ACCOUNT_INFORMATION.filter((p) => {
-    return p.username === accountInfo;
-  });
+  let existingUser;
+  try {
+    existingUser = await clientInformation.findOne({ username: accountInfo });
+  } catch (err) {
+    const error = new HttpError("Registration failed", 500);
+    return next(error);
+  }
 
-  if (!acc) {
+  if (!existingUser) {
     return next(
       new HttpError(
         "Could not find account information for given username",
@@ -44,18 +48,17 @@ const getAccountByUsername = (req, res, next) => {
       )
     );
   }
-
-  res.json({ acc });
+  res.json({ existingUser });
 };
 
 const getQuotesByUsername = async (req, res, next) => {
   //return json formatted DUMMY_QUOTE by username
   const quoteByUser = req.params.username;
-  let quotes
+  let quotes;
   try {
-    quotes = await Quote.find( {username: quoteByUser} )
+    quotes = await Quote.find({ username: quoteByUser });
   } catch (err) {
-    throw new HttpError("Failed to retrieve quotes", 500)
+    return next(new HttpError("Failed to retrieve quotes", 500));
   }
 
   if (!quotes || quotes.length === 0) {
@@ -75,70 +78,77 @@ const createQuote = (req, res, next) => {
     date,
     ppg,
     total,
-    username
-  })
-
+    username,
+  });
 
   if (isNaN(gallons) || gallons <= 0) {
-    throw new HttpError("Gallons must be a positive integer", 400);
+    return next(new HttpError("Gallons must be a positive integer", 400));
   }
 
   if (address1 === "N/A") {
-    throw new HttpError("Please enter an address in account management", 400)
+    return next(
+      new HttpError("Please enter an address in account management", 400)
+    );
   }
   try {
-    createQuote.save()
+    createQuote.save();
   } catch (err) {
-    throw new HttpError("Create failed, try again", 500)
+    return next(new HttpError("Create failed, try again", 500));
   }
 
   res.status(201).json({ quote: createQuote });
 };
 
-const updateAccountInformation = (req, res, next) => {
+const updateAccountInformation = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
-    throw new HttpError("Invalid input", 422);
+    return next(new HttpError("Invalid input", 422));
   }
 
   const { full_name, address1, address2, city, state, zip, username } =
     req.body;
 
   if (full_name.length > 50) {
-    throw new HttpError("Full name must be 50 characters or less", 400);
+    return next(new HttpError("Full name must be 50 characters or less", 400));
   }
 
   if (address1.length > 100) {
-    throw new HttpError("Address must be 100 characters or less", 400);
+    return next(new HttpError("Address must be 100 characters or less", 400));
   }
 
   if (address2.length > 100) {
-    throw new HttpError("Address must be 100 characters or less", 400);
+    return next(new HttpError("Address must be 100 characters or less", 400));
   }
 
   if (city.length > 100) {
-    throw new HttpError("City must be 100 characters or less", 400);
+    return next(new HttpError("City must be 100 characters or less", 400));
   }
 
   if (zip < 10000 || zip > 999999999) {
-    throw new HttpError("Zip must be a number with 5-9 digits", 400);
+    return next(new HttpError("Zip must be a number with 5-9 digits", 400));
   }
 
-  const updateAccountInformation = {
-    ...ACCOUNT_INFORMATION.find((p) => p.username === username),
-  };
-  const formIndex = ACCOUNT_INFORMATION.findIndex(
-    (p) => p.username === username
-  );
-  updateAccountInformation.full_name = full_name;
-  updateAccountInformation.address1 = address1;
-  updateAccountInformation.address2 = address2 || "N/A";
-  updateAccountInformation.city = city;
-  updateAccountInformation.state = state;
-  updateAccountInformation.zip = zip;
+  let client;
+  try {
+    client = await clientInformation.findOne({ username: username });
+  } catch (err) {
+    return next("Could not retrieve client information", 404);
+  }
 
-  ACCOUNT_INFORMATION[formIndex] = updateAccountInformation;
+  client.full_name = full_name;
+  client.address1 = address1;
+  client.address2 = address2;
+  client.state = state;
+  client.city = city;
+  client.zip = zip;
+
+  try {
+    await client.save();
+  } catch (err) {
+    return next("Could not store client information", 500);
+  }
+
   res.status(200).json({ updateAccountInformation });
 };
 

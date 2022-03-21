@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useContext } from "react";
+import React, { useReducer, useCallback, useContext, useState, useEffect } from "react";
 
 import Input from "../components/Form/Input";
 import {
@@ -57,6 +57,43 @@ const AccountDetails = (props) => {
     );
   }, []);
 
+  const [fullName, setFullName] = useState()
+  const [address1, setAddress1] = useState();
+  const [address2, setAddress2] = useState();
+  const [city, setCity] = useState();
+  const [state, setState] = useState();
+  const [zip, setZip] = useState();
+  useEffect(() => {
+    const sendRequest = async () => {
+      try {
+        const fetchURL = `http://localhost:5000/api/fuelquote/${auth.userName}/account`;
+        const response = await fetch(fetchURL);
+
+        let responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData)
+        setFullName(responseData.existingUser.full_name);
+        setAddress1(responseData.existingUser.address1);
+        setAddress2(responseData.existingUser.address2);
+        setCity(responseData.existingUser.city);
+        setState(responseData.existingUser.state);
+        setZip(responseData.existingUser.zip);
+      } catch (err) {
+        alert(err);
+      }
+    };
+    sendRequest();
+  }, [inputHandler, auth.userName]);
+  if (!address1) return false;
+  if (!address2) return false;
+  if (!fullName) return false;
+  if (!city) return false;
+  if (!state) return false;
+  if (!zip) return false;
+
+
   const accountDetailsSubmitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -95,7 +132,7 @@ const AccountDetails = (props) => {
         element="input"
         type="text"
         label="Full Name"
-        defaultValue=""
+        defaultValue={fullName}
         validators={[VALIDATOR_MINLENGTH(1), VALIDATOR_MAXLENGTH(50)]}
         errorText="Please enter a valid name (50 characters max)"
         onInput={inputHandler}
@@ -106,7 +143,7 @@ const AccountDetails = (props) => {
         type="text"
         label="Address1"
         validators={[VALIDATOR_MINLENGTH(1), VALIDATOR_MAXLENGTH(100)]}
-        defaultValue=""
+        defaultValue={address1}
         errorText="Please enter a valid address (100 characters max)"
         onInput={inputHandler}
       />
@@ -116,7 +153,7 @@ const AccountDetails = (props) => {
         type="text"
         label="Address2"
         validators={[]}
-        defaultValue=""
+        defaultValue={address2}
         errorText="Please enter a valid address (100 characters max)"
         onInput={inputHandler}
       />
@@ -124,7 +161,7 @@ const AccountDetails = (props) => {
         id="city"
         element="input"
         type="text"
-        defaultValue=""
+        defaultValue={city}
         label="City"
         validators={[VALIDATOR_MINLENGTH(1), VALIDATOR_MAXLENGTH(50)]}
         errorText="Please enter a city (100 characters max)"
@@ -135,6 +172,7 @@ const AccountDetails = (props) => {
         element="dropdown"
         label="State"
         validators={[VALIDATOR_REQUIRE]}
+        defaultValue={state}
         errorText="Please select a state"
         onInput={inputHandler}
       />
@@ -144,7 +182,7 @@ const AccountDetails = (props) => {
         type="number"
         label="Zipcode"
         validators={[VALIDATOR_MINLENGTH(5), VALIDATOR_MAXLENGTH(9)]}
-        defaultValue=""
+        defaultValue={zip}
         errorText="Please enter a zipcode (between 5 and 9 numbers)"
         onInput={inputHandler}
       />

@@ -30,7 +30,6 @@ const Input = (props) => {
     props.id === "ppg" ||
     props.id === "total",
   });
-  console.log(inputState)
 
   const { id, onInput } = props;
   const { value, isValid } = inputState;

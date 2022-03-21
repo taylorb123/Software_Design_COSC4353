@@ -85,8 +85,9 @@ const NewFuelQuote = (props) => {
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-        setAddress1(responseData.acc[0].address1);
-        setAddress2(responseData.acc[0].address2);
+        console.log(responseData)
+        setAddress1(responseData.existingUser.address1);
+        setAddress2(responseData.existingUser.address2);
       } catch (err) {
         alert(err);
       }

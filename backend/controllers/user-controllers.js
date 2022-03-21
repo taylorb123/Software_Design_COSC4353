@@ -16,25 +16,33 @@ const getUsers = (req,res,next) => {
     res.json({users: DUMMY_USERS});
 };
 
-const login = (req,res,next) => {
+const login = async (req,res,next) => {
     
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         console.log(errors);
-        throw new HttpError('Invalid input', 422);
+        return next (new HttpError('Invalid input', 422));
     }
 
     const { username, password } = req.body;
 
     if (username.length < 8) {
-        throw new HttpError("Username must be at least 8 characters.", 400)
+        return next ( new HttpError("Username must be at least 8 characters.", 400))
       }
 
-    const registeredUser = DUMMY_USERS.find( u => u.username === username);
-    if(!registeredUser || registeredUser.password !== password){
-        //return next(new HttpError('Could not find given user', 401));
-        throw new HttpError('Could not find user credentials', 401);
-    }
+      let existingUser;
+      try{
+          existingUser = await User.findOne({username: username})
+      }catch(err){
+          const error = new HttpError(
+              'Login failed', 500
+          );
+          return next(error);
+      }
+      if (!existingUser || existingUser.password !== password) {
+          const error = new HttpError("Invalid credentials", 401)
+          return next(error)
+      }
     
     res.json({message: 'Logged in!'});
 };
@@ -61,7 +69,7 @@ const register = async (req,res,next) => {
         );
         return next(error);
     }
-    console.log(existingUser);
+
     if(existingUser){
         const error = new HttpError('User exsists already, please login again', 422);
 
@@ -104,10 +112,7 @@ const register = async (req,res,next) => {
         console.log(err);
         return next(error);
     }
-    //res.status(201).json({user: createdUser.toObject({getters: true})});
-
-
-res.status(201).json({user: createdAccount.toObject({getters: true})});
+    res.status(201).json({user: createdAccount.toObject({getters: true})});
     
 };
 
