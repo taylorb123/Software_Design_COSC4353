@@ -2,7 +2,7 @@
 //import supertest from 'supertest';
 const server = require("./server");
 const request = require('supertest');
-
+const user = require("./controllers/user-controllers");
 //server.listen(5678, () => {
 
 describe("POST /register", () =>{
@@ -14,7 +14,27 @@ describe("POST /register", () =>{
             })
             expect (response.statusCode).toBe(201)
         })
+     })
+    ,
+    describe("Checking default user values", () =>{
+        test("testing full_name", async () =>{
+            expect(user.full_name).toBe(undefined);
+        }),
+        test("testing address1", async () =>{
+            expect(user.address1).toBe(undefined);
+        }),
+        test("testing address2", async () =>{
+            expect(user.address2).toBe(undefined);
+        }),
+        test("testing city", async () =>{
+            expect(user.city).toBe(undefined);
+        }),
+        test("testing state", async () =>{
+            expect(user.state).toBe(undefined);
+        })
+
     })
+
 })
 
 describe("POST /login", () =>{
@@ -137,6 +157,34 @@ describe("PATCH /fuelquote", () => {
                 "city": "Houston",
                 "state": "TX",
                 "zip": "77379",
+                "username": "taylor45678"
+            })
+            expect(response.statusCode).toBe(400)
+        })
+    })
+    describe("Update account information given a username, with city > 100", () => {
+        test("400 status code, account information failed (address2 too long)", async () => {
+            const response = await request(server).patch("/api/fuelquote/taylor/accounts").send({
+                "full_name": "taylor123",
+                "address1": "123 changed st.",
+                "address2": "1234 changed st.",
+                "city": "HoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHoustonHouston",
+                "state": "TX",
+                "zip": "77379",
+                "username": "taylor45678"
+            })
+            expect(response.statusCode).toBe(400)
+        })
+    })
+    describe("Update account information given a username, with zip > 100", () => {
+        test("400 status code, account information failed (address2 too long)", async () => {
+            const response = await request(server).patch("/api/fuelquote/taylor/accounts").send({
+                "full_name": "taylor123",
+                "address1": "123 changed st.",
+                "address2": "1234 changed st.",
+                "city": "Houston",
+                "state": "TX",
+                "zip": "77379773797737977379773797737977379773797737977379773797737977379773797737977379773797737977379773797737977379773797737977379",
                 "username": "taylor45678"
             })
             expect(response.statusCode).toBe(400)
