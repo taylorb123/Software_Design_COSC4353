@@ -36,45 +36,30 @@ const formReducer = (state, action) => {
 };
 
 const NewFuelQuote = (props) => {
-  const PPG = 4;
   const auth = useContext(AuthContext);
 
   const [formState, dispatch] = useReducer(formReducer, {
     inputs: {
-      total: {
-        value: 0,
-        isValid: true,
-      },
     },
     isValid: false,
   });
 
   const inputHandler = useCallback((id, value, isValid) => {
-    if (id === "total") {
-      dispatch(
-        {
-          type: "INPUT_CHANGE",
-          value: value * PPG,
-          isValid: true,
-          inputId: id,
-        },
-        []
-      );
-    } else {
-      dispatch(
-        {
-          type: "INPUT_CHANGE",
-          value: value,
-          isValid: isValid,
-          inputId: id,
-        },
-        []
-      );
-    }
+    dispatch(
+      {
+        type: "INPUT_CHANGE",
+        value: value,
+        isValid: isValid,
+        inputId: id,
+      },
+      []
+    );
   }, []);
 
   const [address1, setAddress1] = useState();
   const [address2, setAddress2] = useState();
+  const [ppg, setPPG] = useState();
+  const [total, setTotal] = useState();
   useEffect(() => {
     const sendRequest = async () => {
       try {
@@ -85,7 +70,6 @@ const NewFuelQuote = (props) => {
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-        console.log(responseData)
         setAddress1(responseData.existingUser.address1);
         setAddress2(responseData.existingUser.address2);
       } catch (err) {
@@ -97,9 +81,64 @@ const NewFuelQuote = (props) => {
   if (!address1) return false;
   if (!address2) return false;
 
+  const getQuote = async (event) => {
+    event.preventDefault();
+
+    const sendRequest = async () => {
+      try {
+        const fetchURL = `http://localhost:5000/api/fuelquote/${auth.userName}/quote`;
+        const response = await fetch(fetchURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            gallons: formState.inputs.gallons.value,
+            username: auth.userName,
+          }),
+        });
+
+        let responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        dispatch(
+          {
+            type: "INPUT_CHANGE",
+            value: responseData.ppg,
+            isValid: true,
+            inputId: "ppg",
+          },
+          []
+        );
+        dispatch(
+          {
+            type: "INPUT_CHANGE",
+            value: responseData.total,
+            isValid: true,
+            inputId: "total",
+          },
+          []
+        );
+        setPPG(responseData.ppg)
+        setTotal(responseData.total)
+        alert("Quote Information Sucessfully Retrieved");
+      } catch (err) {
+        alert(err);
+      }
+    };
+    sendRequest();
+  };
+
   const fuelQuoteSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState);
+
+    try {
+      if (!formState.inputs.ppg.value || !formState.inputs.total.value) {
+        alert('Please get a quote before submitting')
+        return
+    }
+    } catch {}
 
     try {
       const response = await fetch("http://localhost:5000/api/fuelquote/", {
@@ -122,10 +161,36 @@ const NewFuelQuote = (props) => {
       if (!response.ok) {
         throw new Error(data.message);
       }
+      dispatch(
+      {
+        type: "INPUT_CHANGE",
+        value: '',
+        isValid: false,
+        inputId: "gallons",
+      },
+      [])
+      dispatch(
+      {
+        type: "INPUT_CHANGE",
+        value: '',
+        isValid: true,
+        inputId: "ppg",
+      },
+      [])
+      dispatch(
+      {
+        type: "INPUT_CHANGE",
+        value: '',
+        isValid: true,
+        inputId: "total",
+      },
+      [])
       alert("Quote Created Successfully");
     } catch (err) {
       alert(err);
     }
+    setPPG("")
+    setTotal("")
   };
 
   return (
@@ -181,7 +246,8 @@ const NewFuelQuote = (props) => {
         type="number"
         label="Price Per Gallon"
         validators={[]}
-        defaultValue={PPG}
+        value={ppg}
+        defaultValue={ppg}
         errorText="Please enter a price"
         onInput={inputHandler}
         disabled={true}
@@ -192,12 +258,16 @@ const NewFuelQuote = (props) => {
         type="number"
         label="Total Amount Due"
         validators={[]}
-        defaultValue={formState.inputs.total.value}
+        value={total}
+        defaultValue={total}
         errorText="Please enter a price"
         onInput={inputHandler}
         disabled={true}
       />
       <p>* indicates a required field</p>
+      <button className="form-button" onClick={getQuote} disabled={!formState.isValid}>
+        Get Quote
+      </button>
       <button
         className="form-button"
         type="submit"

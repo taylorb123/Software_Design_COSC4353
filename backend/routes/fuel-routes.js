@@ -4,7 +4,7 @@ const router            = express.Router();
 const { check }         = require('express-validator');
 
 
-
+router.post('/:username/quote', fuelControllers.pricingModule);
 router.get('/:username', fuelControllers.getQuotesByUsername);
 router.post('/', check('username').not().isEmpty() , fuelControllers.createQuote);                                  //create a new quote
 router.patch('/:username', fuelControllers.updateQuote);                        //update an exsisting quote by username

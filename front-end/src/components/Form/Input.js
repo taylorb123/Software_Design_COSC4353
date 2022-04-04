@@ -22,7 +22,7 @@ const inputReducer = (state, action) => {
 };
 const Input = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: props.defaultValue || props.value || "",
+    value: props.value || props.defaultValue || "",
     isTouched: false,
     isValid:
       false ||
@@ -36,9 +36,6 @@ const Input = (props) => {
   const { value, isValid } = inputState;
 
   useEffect(() => {
-    if (id === "gallons") {
-      props.onInput("total", value, isValid);
-    }
     props.onInput(id, value, isValid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, value, isValid, onInput]);

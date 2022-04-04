@@ -29,6 +29,11 @@ let ACCOUNT_INFORMATION = [
 
 exports.ACCOUNT_INFORMATION = ACCOUNT_INFORMATION;
 
+const pricingModule = async (req, res, next) => {
+  console.log(req.body)
+  res.json({ppg: 1.5, total: 3});
+}
+
 const getAccountByUsername = async (req, res, next) => {
   const accountInfo = req.params.username;
 
@@ -181,3 +186,4 @@ exports.updateQuote = updateQuote;
 exports.deleteQuote = deleteQuote;
 exports.updateAccountInformation = updateAccountInformation;
 exports.getAccountByUsername = getAccountByUsername;
+exports.pricingModule = pricingModule
