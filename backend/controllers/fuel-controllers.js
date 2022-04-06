@@ -32,30 +32,37 @@ exports.ACCOUNT_INFORMATION = ACCOUNT_INFORMATION;
 const pricingModule = async (req, res, next) => {
   var data = req.body;
   let user = req.body.username;
-  let existingUser = await clientInformation.findOne({ username: user });
   //let formIndex = findIndex((user) => user.username == user);
-  let CurrentPricePerGallong = 1.5;
-  let locationFactor = .04;
-  let RateHistoryFactor = 0;
-  let GallonsRequestedFactor = .03;
-  let CompanyProfitFactor = .1;
-
-  if(data.gallons > 1000){
-    GallonsRequestedFactor = .02;
-  }
-
-  if(existingUser != null){
-    let state = existingUser.state;
-    if(existingUser.state === 'TX'){
-      locationFactor = .02;
-    }
+  let CurrentPricePerGallon = 1.5;
+  let CompanyProfitFactor = 0.1;
+  
+  let existingUser = await clientInformation.findOne({ username: user });
+  let locationFactor = 0.04;
+  if (existingUser?.state === "TX") {
+    locationFactor = 0.02;
   }
   
-  let margin = CurrentPricePerGallong * (locationFactor - RateHistoryFactor + GallonsRequestedFactor + CompanyProfitFactor);
-  let suggestedPPG = CurrentPricePerGallong + margin;
+  let requestedBefore = await Quote.findOne({ username: user })
+  let RateHistoryFactor = 0;
+  if (requestedBefore) {
+    RateHistoryFactor = 0.01;
+  }
+
+  let GallonsRequestedFactor = 0.03;
+  if (data.gallons > 1000) {
+    GallonsRequestedFactor = 0.02;
+  }
+
+  let margin =
+    CurrentPricePerGallon *
+    (locationFactor -
+      RateHistoryFactor +
+      GallonsRequestedFactor +
+      CompanyProfitFactor);
+  let suggestedPPG = CurrentPricePerGallon + margin;
   let total = data.gallons * suggestedPPG;
-  res.json({ppg: CurrentPricePerGallong, total: total});
-}
+  res.json({ ppg: suggestedPPG, total: total });
+};
 
 const getAccountByUsername = async (req, res, next) => {
   const accountInfo = req.params.username;
@@ -130,7 +137,6 @@ const createQuote = (req, res, next) => {
 const updateAccountInformation = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    //console.log(errors);
     return next(new HttpError("Invalid input", 422));
   }
 
@@ -209,4 +215,4 @@ exports.updateQuote = updateQuote;
 exports.deleteQuote = deleteQuote;
 exports.updateAccountInformation = updateAccountInformation;
 exports.getAccountByUsername = getAccountByUsername;
-exports.pricingModule = pricingModule
+exports.pricingModule = pricingModule;

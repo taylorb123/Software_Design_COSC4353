@@ -105,7 +105,7 @@ const NewFuelQuote = (props) => {
         dispatch(
           {
             type: "INPUT_CHANGE",
-            value: responseData.ppg,
+            value: responseData.ppg.toFixed(3),
             isValid: true,
             inputId: "ppg",
           },
@@ -114,14 +114,14 @@ const NewFuelQuote = (props) => {
         dispatch(
           {
             type: "INPUT_CHANGE",
-            value: responseData.total,
+            value: responseData.total.toFixed(2),
             isValid: true,
             inputId: "total",
           },
           []
         );
-        setPPG(responseData.ppg)
-        setTotal(responseData.total)
+        setPPG(responseData.ppg.toFixed(3))
+        setTotal(responseData.total.toFixed(2))
         alert("Quote Information Sucessfully Retrieved");
       } catch (err) {
         alert(err);
