@@ -234,7 +234,7 @@ const NewFuelQuote = (props) => {
         id="date"
         element="input"
         type="date"
-        defaultValue="mm/dd/yyyy"
+        placeholder="mm/dd/yyyy"
         label="Delivery Date"
         validators={[VALIDATOR_MINLENGTH(1)]}
         errorText="Please enter a date"
