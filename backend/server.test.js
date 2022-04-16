@@ -3,6 +3,7 @@
 const server = require("./server");
 const request = require('supertest');
 const user = require("./controllers/user-controllers");
+const fuel = require("./controllers/fuel-controllers");
 //server.listen(5678, () => {
 
 describe("POST /register", () =>{
@@ -85,6 +86,7 @@ describe("POST /fuelquote", () => {
             expect (response.statusCode).toBe(201)
         })
     })
+
 })
 
 describe("PATCH /fuelquote", () => {
@@ -213,7 +215,25 @@ describe("GET /", () =>{
 })
 
 })
-
+describe("Create and display a quote preview", () =>{
+    test("...", async () =>{
+        const response = await request(server).post("/api/fuelquote/:username/quote").send({
+            "gallons": 1500,
+            // "address1": "1234 test street",
+            // "address2": "456 still testing",
+            // "date": "03/02/2022",
+            // "ppg": "2.00",
+            // "total": "20",
+            "username": "taylor45678"
+           
+        })
+        //console.log("test" + response.body.total);
+        expect (response.body.total).toBe(2542.5)
+        expect(response.body.ppg).toBe(1.695);
+        
+        
+    })
+})
 describe("DELETE /api/fuelquote", () =>{
     describe("Delete a quote by username", () =>{
         test("should respond with a 200 status code", async () =>{
