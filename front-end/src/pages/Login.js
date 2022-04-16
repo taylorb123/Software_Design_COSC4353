@@ -107,6 +107,7 @@ const Login = (props) => {
         if (!response.ok) {
           throw new Error(data.message);
         }
+        alert("Registered sucessfully")
         setIsLogin(true)
       } catch (err) {
         alert(err);
